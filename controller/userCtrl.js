@@ -31,6 +31,28 @@ const loginUserCtrl=asyncHandler(async (req, res) => {
         throw new Error("invalid Credentials");
     }
 });
+//update  a user
+const updatedUser = asyncHandler(async (req, res) => {
+   const {id} =req.params; 
+   try {
+        const updatedUser = await User.findByIdAndUpdate(
+        id,
+         {
+            firstname: req?.body?.firstname,
+            lastname: req?.body?.lastname,
+            email: req?.body?.email,
+            mobile: req?.body?.mobile,
+
+        },
+         {
+            new: true,
+        }
+        ); 
+        res.json(updatedUser);
+   } catch (error) {
+    throw new Error(error);
+   }
+    });
 
 //Get all users
 const getallUser= asyncHandler(async (req, res) => {
@@ -61,7 +83,7 @@ const getaUser = asyncHandler(async (req, res) => {
 
 });
 
-//Delet a single User
+//Delete a single User
 const deleteaUser= asyncHandler(async (req, res) => {
     console.log(req.params);
     const{id} = req.params;
@@ -69,7 +91,7 @@ const deleteaUser= asyncHandler(async (req, res) => {
         const deleteaUser = await User.findByIdAndDelete(id);
         res.json({
             deleteaUser,
-        })
+        });
 
     } catch (error) {
         throw new Error(error);
@@ -78,4 +100,6 @@ const deleteaUser= asyncHandler(async (req, res) => {
 
 });
 
-module.exports = {creatUser,loginUserCtrl, getallUser,getaUser,deleteaUser};
+
+
+module.exports = {creatUser,loginUserCtrl, getallUser,getaUser,deleteaUser, updatedUser};
