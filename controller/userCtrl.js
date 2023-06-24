@@ -32,12 +32,14 @@ const loginUserCtrl=asyncHandler(async (req, res) => {
         throw new Error("invalid Credentials");
     }
 });
+
 //update  a user
 const updatedUser = asyncHandler(async (req, res) => {
-   const {id} =req.params; 
+   console.log(); 
+   const {_id} =req.user;
    try {
         const updatedUser = await User.findByIdAndUpdate(
-        id,
+        _id,
          {
             firstname: req?.body?.firstname,
             lastname: req?.body?.lastname,
@@ -101,6 +103,22 @@ const deleteaUser= asyncHandler(async (req, res) => {
 
 });
 
+const blockUser = asyncHandler(async (req, res) =>{
+    const {id} = req.params;
+    try {
+        const block = User.findByIdAndUpdate (
+            id,
+            {
+                isBlocked: true,
+            },
+            {
+                new:true
+            }
+        );
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+const unblockUser = asyncHandler(async (req, res) =>{});
 
-
-module.exports = {creatUser,loginUserCtrl, getallUser,getaUser,deleteaUser, updatedUser};
+module.exports = {creatUser,loginUserCtrl, getallUser,getaUser,deleteaUser, updatedUser,blockUser,unblockUser,};
